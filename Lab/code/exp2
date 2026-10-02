@@ -1,0 +1,67 @@
+# Function to check if a queen can be placed safely
+def is_safe(board, row, col):
+
+    # Check the same column
+    for i in range(row):
+        if board[i] == col:
+            return False
+
+    # Check the left diagonal
+    for i in range(row):
+        if board[i] - i == col - row:
+            return False
+
+    # Check the right diagonal
+    for i in range(row):
+        if board[i] + i == col + row:
+            return False
+
+    return True
+
+
+# Function to solve the 8 Queens problem
+def solve(board, row):
+
+    # If all 8 queens are placed, solution is found
+    if row == 8:
+        return True
+
+    # Try placing the queen in each column
+    for col in range(8):
+
+        # Check if the position is safe
+        if is_safe(board, row, col):
+
+            # Place the queen
+            board[row] = col
+
+            # Move to the next row
+            if solve(board, row + 1):
+                return True
+
+            # Remove the queen if it leads to no solution
+            board[row] = -1
+
+    return False
+
+
+# Create the board
+board = [-1] * 8
+
+# Solve the problem
+if solve(board, 0):
+
+    print("Solution:")
+
+    # Print the chessboard
+    for row in range(8):
+        for col in range(8):
+
+            if board[row] == col:
+                print("Q", end=" ")
+            else:
+                print(".", end=" ")
+
+        print()
+else:
+    print("No solution")
