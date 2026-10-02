@@ -1,0 +1,104 @@
+from collections import deque
+
+# Function to print the puzzle
+def print_puzzle(state):
+    for i in range(0, 9, 3):
+        print(state[i], state[i+1], state[i+2])
+    print()
+
+
+# Function to find possible moves
+def get_moves(state):
+
+    moves = []
+
+    # Find the position of blank space (0)
+    pos = state.index(0)
+
+    row = pos // 3
+    col = pos % 3
+
+    # Move blank UP
+    if row > 0:
+        new = list(state)
+        new[pos], new[pos-3] = new[pos-3], new[pos]
+        moves.append(tuple(new))
+
+    # Move blank DOWN
+    if row < 2:
+        new = list(state)
+        new[pos], new[pos+3] = new[pos+3], new[pos]
+        moves.append(tuple(new))
+
+    # Move blank LEFT
+    if col > 0:
+        new = list(state)
+        new[pos], new[pos-1] = new[pos-1], new[pos]
+        moves.append(tuple(new))
+
+    # Move blank RIGHT
+    if col < 2:
+        new = list(state)
+        new[pos], new[pos+1] = new[pos+1], new[pos]
+        moves.append(tuple(new))
+
+    return moves
+
+
+# BFS function to solve the puzzle
+def solve(start, goal):
+
+    # Queue stores the current state and the path taken
+    queue = deque([(start, [])])
+
+    # Set stores states that are already visited
+    visited = {start}
+
+    while queue:
+
+        # Remove the first state from the queue
+        state, path = queue.popleft()
+
+        # If goal is reached, return the path
+        if state == goal:
+            return path
+
+        # Generate all possible next states
+        for next_state in get_moves(state):
+
+            # Check if this state was not visited before
+            if next_state not in visited:
+
+                visited.add(next_state)
+
+                # Add the new state to the queue
+                queue.append((next_state, path + [next_state]))
+
+    return None
+
+
+# Initial puzzle
+start = (1, 2, 3,
+         4, 0, 6,
+         7, 5, 8)
+
+# Goal puzzle
+goal = (1, 2, 3,
+        4, 5, 6,
+        7, 8, 0)
+
+
+# Find the solution
+solution = solve(start, goal)
+
+
+# Display the solution
+print("Initial State:")
+print_puzzle(start)
+
+print("Solution:")
+
+for state in solution:
+    print_puzzle(state)
+
+print("Goal Reached!")
