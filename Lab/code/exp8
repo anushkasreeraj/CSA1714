@@ -1,0 +1,27 @@
+
+# DFS implementation
+
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F'],
+    'D': [],
+    'E': [],
+    'F': []
+}
+
+# DFS function
+def dfs(node, visited):
+
+    # Mark the node as visited
+    visited.append(node)
+    print(node, end=" ")
+
+    # Visit all unvisited neighbours
+    for neighbour in graph[node]:
+        if neighbour not in visited:
+            dfs(neighbour, visited)
+
+# Start DFS from node A
+visited = []
+dfs('A', visited)
