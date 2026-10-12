@@ -1,0 +1,37 @@
+# Initial condition of the rooms
+A = "Dirty"
+B = "Dirty"
+
+# Initial position of the vacuum cleaner
+position = "A"
+
+# Repeat until both rooms are clean
+while A == "Dirty" or B == "Dirty":
+
+    # Check the current room
+    if position == "A":
+
+        # Clean room A if it is dirty
+        if A == "Dirty":
+            A = "Clean"
+            print("Room A cleaned")
+
+        # Move to room B
+        position = "B"
+        print("Move to Room B")
+
+    else:
+
+        # Clean room B if it is dirty
+        if B == "Dirty":
+            B = "Clean"
+            print("Room B cleaned")
+
+        # Move to room A
+        position = "A"
+        print("Move to Room A")
+
+# Display the final condition
+print("Room A:", A)
+print("Room B:", B)
+print("Both rooms are clean")
