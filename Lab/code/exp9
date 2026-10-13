@@ -1,0 +1,51 @@
+
+# TSP using Greedy Search with Heuristic
+
+# Distance matrix
+graph = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+
+# City names
+cities = ['A', 'B', 'C', 'D']
+n = len(graph)
+
+# Display input
+print("Distance Matrix:")
+for i in range(n):
+    print(cities[i], graph[i])
+
+# Start from city A
+current = 0
+visited = [current]
+cost = 0
+
+# Find the nearest unvisited city
+while len(visited) < n:
+    next_city = -1
+    min_heuristic = float('inf')
+
+    for city in range(n):
+        if city not in visited:
+            heuristic = graph[current][city]
+
+            if heuristic < min_heuristic:
+                min_heuristic = heuristic
+                next_city = city
+
+    visited.append(next_city)
+    cost += min_heuristic
+    current = next_city
+
+# Return to starting city A
+cost += graph[current][0]
+visited.append(0)
+
+# Display output using city names
+path = [cities[i] for i in visited]
+
+print("\nPath:", " -> ".join(path))
+print("Total Cost:", cost)
