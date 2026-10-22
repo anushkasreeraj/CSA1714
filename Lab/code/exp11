@@ -1,0 +1,63 @@
+
+# Map Coloring using CSP and Degree Heuristic
+
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'C', 'D'],
+    'C': ['A', 'B', 'D'],
+    'D': ['B', 'C']
+}
+
+colors = ['Red', 'Green', 'Blue']
+color_map = {}
+
+# Check whether a color is safe
+def is_safe(region, color):
+    for neighbour in graph[region]:
+        if color_map.get(neighbour) == color:
+            return False
+    return True
+
+# Degree Heuristic:
+# Select the region with the most uncolored neighbours
+def select_region():
+    uncolored = [r for r in graph if r not in color_map]
+
+    return max(
+        uncolored,
+        key=lambda r: sum(
+            1 for n in graph[r] if n not in color_map
+        )
+    )
+
+# Solve using backtracking and the heuristic
+def solve():
+    if len(color_map) == len(graph):
+        return True
+
+    region = select_region()
+
+    for color in colors:
+        if is_safe(region, color):
+            color_map[region] = color
+
+            if solve():
+                return True
+
+            del color_map[region]  # Backtrack
+
+    return False
+
+print("Map Regions and Neighbours:")
+for region in graph:
+    print(region, ":", graph[region])
+
+print("\nAvailable Colors:", colors)
+print("Heuristic: Degree Heuristic")
+
+if solve():
+    print("\nMap Coloring Solution:")
+    for region in graph:
+        print(region, ":", color_map[region])
+else:
+    print("No solution exists")
