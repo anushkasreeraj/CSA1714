@@ -1,0 +1,100 @@
+
+# Alpha-Beta Pruning Algorithm with Game Tree Display
+
+# Leaf node scores
+scores = [3, 5, 6, 9, 1, 2, 0, -1]
+
+# Function to display the game tree
+def display_tree():
+
+    print("\nGAME TREE")
+    print("""
+                         MAX
+                      /       \\
+                    MIN       MIN
+                   /   \\     /   \\
+                 MAX   MAX  MAX   MAX
+                / \\   / \\  / \\   / \\
+               3   5 6   9 1   2 0  -1
+    """)
+
+
+# Alpha-Beta Pruning function
+def alpha_beta(depth, node, maximizing, alpha, beta):
+
+    # If leaf node is reached
+    if depth == 3:
+        print("Evaluating leaf:", scores[node])
+        return scores[node]
+
+    # Maximizing player's turn
+    if maximizing:
+        best = float('-inf')
+
+        for i in range(2):
+
+            value = alpha_beta(
+                depth + 1,
+                node * 2 + i,
+                False,
+                alpha,
+                beta
+            )
+
+            best = max(best, value)
+            alpha = max(alpha, best)
+
+            # Alpha-Beta pruning condition
+            if alpha >= beta:
+                print("Pruning at node:", node)
+                break
+
+        return best
+
+    # Minimizing player's turn
+    else:
+        best = float('inf')
+
+        for i in range(2):
+
+            value = alpha_beta(
+                depth + 1,
+                node * 2 + i,
+                True,
+                alpha,
+                beta
+            )
+
+            best = min(best, value)
+            beta = min(beta, best)
+
+            # Alpha-Beta pruning condition
+            if alpha >= beta:
+                print("Pruning at node:", node)
+                break
+
+        return best
+
+
+# Main program
+print("ALPHA-BETA PRUNING ALGORITHM")
+
+# Display input
+print("\nInput:")
+print("Leaf node scores:", scores)
+print("Tree depth: 3")
+print("Root node: MAX")
+
+# Display game tree
+display_tree()
+
+# Initial alpha and beta values
+alpha = float('-inf')
+beta = float('inf')
+
+# Apply Alpha-Beta Pruning
+result = alpha_beta(0, 0, True, alpha, beta)
+
+# Display result
+print("\nOutput:")
+print("Best score:", result)
