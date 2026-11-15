@@ -1,0 +1,49 @@
+def operation_counts(graph, start, goal):
+    """Return comparable edge-examination counts and search results."""
+    reports = {}
+    # BFS edge examinations
+    q, seen = deque([start]), {start}
+    bfs_checks = 0
+    while q:
+        v = q.popleft()
+        if v == goal: break
+        for u, _ in graph[v]:
+            bfs_checks += 1
+            if u not in seen:
+                seen.add(u); q.append(u)
+    reports["BFS successor examinations"] = bfs_checks
+
+    # DFS edge examinations
+    seen = set()
+    dfs_checks = 0
+    def walk(v):
+        nonlocal dfs_checks
+        if v == goal: return True
+        seen.add(v)
+        for u, _ in graph[v]:
+            dfs_checks += 1
+            if u not in seen and walk(u): return True
+        return False
+    walk(start)
+    reports["DFS successor examinations"] = dfs_checks
+
+    # UCS edge relaxations and heap operations
+    heap, best = [(0.0, start)], {start: 0.0}
+    relaxations = pushes = pops = 0
+    while heap:
+        cost, v = heapq.heappop(heap); pops += 1
+        if cost != best.get(v): continue
+        if v == goal: break
+        for u, w in graph[v]:
+            relaxations += 1
+            nc = cost + w
+            if nc < best.get(u, float("inf")):
+                best[u] = nc
+                heapq.heappush(heap, (nc, u)); pushes += 1
+    reports["UCS edge relaxations"] = relaxations
+    reports["UCS heap pushes"] = pushes
+    reports["UCS heap pops"] = pops
+    return reports
+
+small = build_hospital_graph(31, 10)
+operation_counts(small, 0, 30)
