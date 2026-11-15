@@ -1,0 +1,14 @@
+# TASK 1 – Demonstrate all three strategies on the same small hospital map.
+demo_graph = [
+    [(1, 2.0), (2, 1.0)],  # pharmacy
+    [(0, 2.0), (3, 2.0)],
+    [(0, 1.0), (3, 8.0)],
+    [(1, 2.0), (2, 8.0)]   # ward
+]
+for search in (bfs, recursive_dfs, ucs):
+    result = search(demo_graph, 0, 3)
+    print(search.__name__, "path=", result.path,
+          "depth=", result.depth,
+          "travel_time=", calculate_path_cost(demo_graph, result.path))
+# Expected: BFS returns a 2-edge route; UCS selects 0->2->3 only if total cost is lower?
+# Here 0->1->3 costs 4 and 0->2->3 costs 9, so UCS should choose 0->1->3.
