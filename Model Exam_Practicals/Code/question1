@@ -1,0 +1,74 @@
+
+# AO* Search Algorithm
+
+graph = {
+    'A': [[('B', 1), ('C', 1)], [('D', 1)]],
+    'B': [[('E', 1)]],
+    'C': [[('F', 1)]],
+    'D': [[('G', 1)]],
+    'E': [],
+    'F': [],
+    'G': []
+}
+print("GRAPH:")
+for k in graph.values():
+    print(k)
+# Heuristic values
+print()
+print("HEURISTIC VALUES")
+heuristic = {
+    'A': 4,
+    'B': 2,
+    'C': 2,
+    'D': 3,
+    'E': 0,
+    'F': 0,
+    'G': 0
+}
+for i in heuristic.values():
+    print(i)
+
+# AO* function
+def ao_star(node):
+    if not graph[node]:
+        return heuristic[node]
+
+    best_cost = float('inf')
+    best_path = None
+
+    for option in graph[node]:
+        cost = 0
+
+        for child, edge_cost in option:
+            cost += edge_cost + ao_star(child)
+
+        if cost < best_cost:
+            best_cost = cost
+            best_path = option
+
+    heuristic[node] = best_cost
+    solution[node] = best_path
+
+    return best_cost
+
+
+# Display solution path
+def display_path(node):
+    print(node, end=" ")
+
+    if node in solution:
+        for child, cost in solution[node]:
+            display_path(child)
+
+
+solution = {}
+
+print("AO* SEARCH ALGORITHM")
+print("AND-OR GRAPH:")
+print(graph)
+
+print("Optimal Solution Path:")
+ao_star('A')
+display_path('A')
+
+print("\nMinimum Cost:", heuristic['A'])
