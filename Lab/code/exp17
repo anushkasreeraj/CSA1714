@@ -1,0 +1,22 @@
+data = [
+["Sunny", "Hot", "Yes"],
+["Sunny", "Cold", "Yes"],
+["Rainy", "Hot", "No"],
+["Rainy", "Cold", "No"],
+["Sunny", "Hot", "Yes"],
+["Rainy", "Cold", "No"]
+]
+def decision_tree(weather, temperature):
+if weather == "Sunny":
+return "Yes"
+elif weather == "Rainy":
+return "No"
+else:
+return "Unknown"
+print("Decision Tree Classification")
+weather = input("Enter Weather (Sunny/Rainy): ")
+temperature = input("Enter Temperature (Hot/Cold): ")
+result = decision_tree(weather, temperature)
+print("Weather:", weather)
+print("Temperature:", temperature)
+print("Prediction:", result)
