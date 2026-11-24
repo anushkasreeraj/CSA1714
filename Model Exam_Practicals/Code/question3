@@ -1,0 +1,18 @@
+
+% Hospital Patient Database
+
+% Facts: patient(Name, Age, Disease, Doctor)
+
+patient('Anu', 20, fever, 'Dr Kumar').
+patient('Rahul', 35, diabetes, 'Dr Priya').
+patient('Meena', 28, fever, 'Dr Kumar').
+patient('Arun', 45, asthma, 'Dr Lakshmi').
+patient('Divya', 30, diabetes, 'Dr Priya').
+
+% Rule to find patients suffering from a particular disease
+patients_with_disease(Disease, Name, Age, Doctor) :-
+    patient(Name, Age, Disease, Doctor).
+
+% Rule to find patients treated by a particular doctor
+patients_by_doctor(Doctor, Name, Age, Disease) :-
+    patient(Name, Age, Disease, Doctor).
