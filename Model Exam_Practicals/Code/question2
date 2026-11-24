@@ -1,0 +1,63 @@
+# Traveling Salesman Problem using Genetic Algorithm
+
+import random
+# Distance matrix
+distance = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+
+cities = [0, 1, 2, 3]
+print("distance matrix:")
+for i in distance:
+    print(i)
+print()
+# Calculate route distance
+def route_distance(route):
+    total = 0
+
+    for i in range(len(route)):
+        total += distance[route[i]][route[(i + 1) % len(route)]]
+
+    return total
+
+
+# Initial population
+population = []
+
+for i in range(6):
+    route = cities[:]
+    random.shuffle(route)
+    population.append(route)
+
+print("TRAVELING SALESMAN PROBLEM")
+print("\nInitial Population:")
+for route in population:
+    print(route, "Distance:", route_distance(route))
+# Genetic Algorithm
+for generation in range(50):
+    # Selection
+    population.sort(key=route_distance)
+    parent1 = population[0]
+    parent2 = population[1]
+    # Crossover
+    child = parent1[:2] + [
+        city for city in parent2 if city not in parent1[:2]
+    ]
+    # Mutation
+    if random.random() < 0.3:
+        i, j = random.sample(range(4), 2)
+        child[i], child[j] = child[j], child[i]
+    # New population
+    population = [parent1, parent2, child]
+    while len(population) < 6:
+        route = cities[:]
+        random.shuffle(route)
+        population.append(route)
+# Find shortest route
+best_route = min(population, key=route_distance)
+
+print("\nShortest Route:", best_route + [best_route[0]])
+print("Minimum Distance:", route_distance(best_route))
