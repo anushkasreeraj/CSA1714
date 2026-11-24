@@ -1,0 +1,10 @@
+
+% Backward Chaining in Prolog
+
+% Facts
+bird(parrot).
+healthy(parrot).
+
+% Rule: All birds can fly
+can_fly(X) :-
+    bird(X).
